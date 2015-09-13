@@ -18,18 +18,18 @@ import java.net.CookiePolicy;
 public class Config
 {
     public static final String USER_EMAIL = "karcsi@ekezet.com";
-    public static final String USER_PASSWORD = "teszt";
+    public static final String USER_PASSWORD = "teszttesztteszt";
 
     public static final String PREFS_NAME = "prefs";
 
-    public static final String URL_API_BASE = "http://192.168.9.223:8090";
-    //public static final String URL_API_BASE = "http://mobilechallenge.big.hu";
+    //public static final String URL_API_BASE = "http://192.168.9.223:8090";
+    public static final String URL_API_BASE = "http://mobilechallenge.big.hu";
 
-    public static final String URL_CLIENT_SOURCE = "https://github.com/kevinsawicki/http-request/archive/master.zip";
+    public static final String URL_CLIENT_SOURCE = "https://github.com/atomgomba/bftest/archive/master.zip";
 
     public static final String FILENAME_CLIENT_SOURCE = "client-source.zip";
 
-    public static final boolean FINALIZE = false;
+    public static final boolean FINALIZE = true;
 
     public static File dataCachePath = null;
 

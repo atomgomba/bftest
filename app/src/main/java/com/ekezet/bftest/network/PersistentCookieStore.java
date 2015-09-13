@@ -91,6 +91,7 @@ public class PersistentCookieStore implements CookieStore
         String[] cookies = new String[cookiesSet.size()];
         cookiesSet.toArray(cookies);
         httpCookies = new HashMap();
+        HttpCookie cookie;
         for (int n = 0, N = cookies.length; n < N; n++)
         {
             pair = TextUtils.split(cookies[n], "=");
@@ -99,7 +100,9 @@ public class PersistentCookieStore implements CookieStore
                 continue;
             }
             Log.d(getClass().getSimpleName(), String.format("Loading cookie: %s", cookies[n]));
-            httpCookies.put(pair[0], new HttpCookie(pair[0], pair[1]));
+            cookie = new HttpCookie(pair[0], pair[1]);
+            cookie.setDomain(null);
+            httpCookies.put(pair[0], cookie);
         }
         mCookies.addAll(httpCookies.values());
     }
@@ -112,13 +115,15 @@ public class PersistentCookieStore implements CookieStore
         }
         SharedPreferences.Editor edit = Config.getPrefs().edit();
         Set<String> sCookies = new HashSet();
+        HashMap<String, String> cookieMap = new HashMap();
         String pair;
         for (HttpCookie cookie : mCookies)
         {
             pair = String.format("%s=%s", cookie.getName(), cookie.getValue());
             Log.d(getClass().getSimpleName(), String.format("Persisting cookie: %s", pair));
-            sCookies.add(pair);
+            cookieMap.put(cookie.getName(), pair);
         }
+        sCookies.addAll(cookieMap.values());
         edit.putStringSet(PREFS_PREFIX + "cookies", sCookies);
         return edit.commit();
     }

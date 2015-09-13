@@ -135,11 +135,10 @@ public class MainActivity extends Activity
             {
                 super.onPostExecute(response);
                 // ha már fel van iratkozva, az nem hiba
-                if (null != response.getErrorMessage())
+                if (null != response.getErrorMessage() && HttpURLConnection.HTTP_NOT_ACCEPTABLE != response.getCode())
                 {
                     return;
-                }
-                if (HttpURLConnection.HTTP_NOT_ACCEPTABLE != response.getCode())
+                } else if (HttpURLConnection.HTTP_NOT_ACCEPTABLE != response.getCode())
                 {
                     downloadClientSource();
                 } else
