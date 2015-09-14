@@ -31,7 +31,7 @@ public class Config
     public static final String FILENAME_CLIENT_SOURCE = "client-source.zip";
     public static final String FILENAME_SERVER_SOURCE = "server-source.zip";
 
-    public static final boolean FINALIZE = false;
+    public static final boolean FINALIZE = true;
 
     public static File dataCachePath = null;
 
