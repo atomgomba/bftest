@@ -60,7 +60,7 @@ public abstract class HTTPUploader extends AsyncTask<HTTP.UploadParams, Integer,
     protected HTTP.Response uploadFiles(String url, List<File> files)
     {
         final String CRLF = "\r\n";
-        String boundary = "--boundary:" + String.valueOf(System.currentTimeMillis());
+        String boundary = "--boundary-" + String.valueOf(System.currentTimeMillis());
         String dispoHeader = "Content-Disposition: form-data; name=\"%s\"; filename=\"%s\"" + CRLF;
 
         Log.d(getClass().toString(), "Uploading to: " + url);
@@ -108,6 +108,8 @@ public abstract class HTTPUploader extends AsyncTask<HTTP.UploadParams, Integer,
                 dis.close();
                 ldos.writeBytes(boundary + CRLF);
                 ldos.writeBytes(String.format(dispoHeader, file.getName(), file.getName()));
+                ldos.writeBytes("Content-Type: application/octet-stream" + CRLF);
+                ldos.writeBytes("Content-Transfer-Encoding: binary" + CRLF);
                 ldos.writeBytes(CRLF);
                 ldos.write(data);
                 ldos.writeBytes(CRLF);
@@ -117,6 +119,13 @@ public abstract class HTTPUploader extends AsyncTask<HTTP.UploadParams, Integer,
             ldos.writeBytes(boundary + "--" + CRLF);
             ldos.flush();
             ldos.close();
+
+            int status = connection.getResponseCode();
+            if (status != HttpURLConnection.HTTP_OK && status != HttpURLConnection.HTTP_CREATED)
+            {
+                connection.disconnect();
+                return new HTTP.Response(null, connection.getResponseMessage(), connection.getResponseCode());
+            }
 
             HTTP.storeCookies(connection);
             connection.disconnect();

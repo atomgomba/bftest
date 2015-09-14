@@ -74,6 +74,12 @@ public class MainActivity extends Activity
         }
 
         @Override
+        protected void onPostExecute(HTTP.Response response)
+        {
+            addLine("<strong>Result: </strong>" + response.getResult());
+        }
+
+        @Override
         protected void onProgressUpdate(Integer... values)
         {
             int length = getContentLength();
@@ -92,6 +98,12 @@ public class MainActivity extends Activity
             addLine("<strong>POST </strong>" + arg.getUrl());
             addLine("");
             return uploadFiles(arg.getUrl(), arg.getFiles());
+        }
+
+        @Override
+        protected void onPostExecute(HTTP.Response response)
+        {
+            addLine("<strong>Result: </strong>" + response.getResult());
         }
 
         @Override
@@ -191,10 +203,32 @@ public class MainActivity extends Activity
                 {
                     return;
                 }
-                getDocs();
+                downloadServerSource();
             }
         };
         File destFile = new File(Config.dataCachePath, Config.FILENAME_CLIENT_SOURCE);
+        HTTP.DownloadParams params = new HTTP.DownloadParams(url, destFile);
+        client.execute(params);
+    }
+
+    private void downloadServerSource()
+    {
+        String url = Config.URL_SERVER_SOURCE;
+
+        Downloader client = new Downloader()
+        {
+            @Override
+            protected void onPostExecute(HTTP.Response response)
+            {
+                super.onPostExecute(response);
+                if (null != response.getErrorMessage())
+                {
+                    return;
+                }
+                getDocs();
+            }
+        };
+        File destFile = new File(Config.dataCachePath, Config.FILENAME_SERVER_SOURCE);
         HTTP.DownloadParams params = new HTTP.DownloadParams(url, destFile);
         client.execute(params);
     }
@@ -298,6 +332,7 @@ public class MainActivity extends Activity
 
         List<File> files = new ArrayList();
         files.add(new File(Config.dataCachePath, Config.FILENAME_CLIENT_SOURCE));
+        files.add(new File(Config.dataCachePath, Config.FILENAME_SERVER_SOURCE));
         HTTP.UploadParams params = new HTTP.UploadParams(url, files);
         client.execute(params);
     }

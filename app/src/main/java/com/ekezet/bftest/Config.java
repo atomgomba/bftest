@@ -17,7 +17,7 @@ import java.net.CookiePolicy;
 
 public class Config
 {
-    public static final String USER_EMAIL = "karcsi@ekezet.com";
+    public static final String USER_EMAIL = "karoly.kiripolszky@gmail.com";
     public static final String USER_PASSWORD = "teszttesztteszt";
 
     public static final String PREFS_NAME = "prefs";
@@ -26,10 +26,12 @@ public class Config
     public static final String URL_API_BASE = "http://mobilechallenge.big.hu";
 
     public static final String URL_CLIENT_SOURCE = "https://github.com/atomgomba/bftest/archive/master.zip";
+    public static final String URL_SERVER_SOURCE = "https://github.com/atomgomba/bftest-server/archive/master.zip";
 
     public static final String FILENAME_CLIENT_SOURCE = "client-source.zip";
+    public static final String FILENAME_SERVER_SOURCE = "server-source.zip";
 
-    public static final boolean FINALIZE = true;
+    public static final boolean FINALIZE = false;
 
     public static File dataCachePath = null;
 

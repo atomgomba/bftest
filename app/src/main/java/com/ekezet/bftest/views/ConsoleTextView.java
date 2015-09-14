@@ -23,8 +23,6 @@ public class ConsoleTextView extends TextView
         setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
         setSingleLine(false);
         setLineSpacing(0.0f, 1.25f);
-        setVerticalScrollBarEnabled(true);
-        setHorizontalScrollBarEnabled(false);
         mLines = new ArrayList();
     }
 

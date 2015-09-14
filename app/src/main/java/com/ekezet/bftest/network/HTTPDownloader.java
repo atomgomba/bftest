@@ -24,19 +24,22 @@ public abstract class HTTPDownloader extends AsyncTask<HTTP.DownloadParams, Inte
         try
         {
             HttpURLConnection connection = HTTP.getBaseConnection(new URL(url));
-            connection.setInstanceFollowRedirects(false);
+            //connection.setInstanceFollowRedirects(false);
             connection.setRequestMethod("GET");
             connection.connect();
 
             int statusCode = connection.getResponseCode();
+            /*
             if (statusCode == 301 || statusCode == 302) {
                 String newLocation = connection.getHeaderField("Location");
+                Log.d(getClass().getSimpleName(), "Redirect: " + newLocation);
                 connection.disconnect();
                 connection = HTTP.getBaseConnection(new URL(newLocation));
                 connection.setRequestMethod("GET");
                 connection.setInstanceFollowRedirects(false);
                 connection.connect();
             }
+            */
 
             FileOutputStream fos = new FileOutputStream(destFile);
             InputStream is;
@@ -48,12 +51,15 @@ public abstract class HTTPDownloader extends AsyncTask<HTTP.DownloadParams, Inte
             {
                 e.printStackTrace();
                 String error = String.format("%s %s", statusCode, connection.getResponseMessage());
-                Log.d("HTTP", error);
+                Log.e("HTTP", error);
+                connection.disconnect();
                 return new HTTP.Response(null, error, statusCode);
             }
 
             mContentLength = connection.getContentLength();
             if (mContentLength < 1) {
+                is.close();
+                connection.disconnect();
                 return new HTTP.Response(null, "Invalid content length");
             }
 
